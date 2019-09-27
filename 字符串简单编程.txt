@@ -1,0 +1,155 @@
+1.递归法求解1^2+2^2+3^2+4^2+~~~~+N^2
+long Sum(int n)
+{
+	if(n==1)
+		return 1;
+	if(n>0)
+	{
+		return Sum(n-1)+n*n;
+	}
+	return 0;
+}
+
+void main()
+{
+	long b;
+	cin>>b;
+	long a=Sum(b);
+	cout<<a<<endl;
+}
+2.求字符串中数字字符的个数
+int CalDigtal(char *str)
+{
+	if(str == NULL)
+	{
+		cout<<"the string is null"<<endl;
+		return 0;
+	}
+	char *ptr = str;
+	int strdigcoun=0;
+	while(*ptr != '\0')
+	{
+		if(( *ptr >= '0') && ( *ptr <='9'))
+			strdigcoun++;
+		ptr++;
+	}
+	return strdigcoun;
+}
+
+void main()
+{
+	char *a="ased12345";
+	int count=CalDigtal(a);
+	cout<<"the string's digtal have "<<count<<endl;
+}
+
+3.strncpy()库函数
+	strncpy(pcarry,"hello",strlen("hello"));     //hello+随机值
+	strncpy(pcarry,"hello",sizeof("hello"));    //hello
+
+my_strncpy实现:
+char* my_strncpy(char *pcDest,const char* szSrc,unsigned long ulLength)
+{
+	char *pcPoint=pcDest;
+	if((szSrc == NULL) || (pcDest == NULL))
+	{
+		return NULL;
+	}
+	while(ulLength && (*pcPoint = *szSrc))
+	{
+		pcPoint++;
+		szSrc++;
+		ulLength--;
+	}
+	if(!ulLength)  //如果ulLength=0 就给补'/0'  
+	{
+		*pcPoint='\0';
+	}
+	return pcDest;
+}
+
+void main()
+{
+	char a[]="1234567890";
+	char b[]="1234567890";
+	strncpy(a,"ABC",strlen("ABC"));         //ABC4567890
+	strncpy(a,"ABC",sizeeof("ABC"));      //ABC  
+	my_strncpy(b,"ABC",strlen("ABC"));  //ABC
+	cout<<a<<endl;
+	cout<<b<<endl;
+}
+4.龙旗控股2015应届生招聘笔试题
+实现字符串右循环移位函数，比如：“abcdefghi”循环右移两位就是“hiabcdefg”。
+函数原型: void RightLoopMove(char *pStr,unsigned short steps)
+解：
+法一：
+char* RightLoopMove(char* pStr,unsigned short steps)
+{
+	assert(pStr != NULL);
+	char *arr=(char*)malloc(20);
+	int length=strlen(pStr);
+	short n=length-steps;
+	strcpy(arr,pStr+n);
+	strcpy(arr+steps,pStr);
+	*(arr+length)='\0'
+	//strcpy(pStr,arr);        //这句话当传入动态字符串运行不过，不知道什么原因
+	return arr;
+}
+	//不过这与题目要求的函数原型不同；
+void main()
+{
+	char *str="abcdefghi";
+	char *p=RightLoopMove(str,3);
+	cout<<p<<endl;
+}
+法二：
+void RightLoopMove(char* pStr,unsigned short steps)
+{
+	assert(pStr != NULL);
+	char *arr=(char*)malloc(20);
+	int length=strlen(pStr);
+	short n=length-steps;
+	strcpy(arr,pStr+n);
+	strcpy(arr+steps,pStr);
+	*(arr+length)='\0';
+	strcpy(pStr,arr);     
+}
+
+void main()
+{
+	char str[]="abcdefghi";       //当传入的str是静态字符串，strcpy(pStr,arr)神奇的运行过了
+	RightLoopMove(str,2);
+	cout<<str<<endl;
+}
+
+法三：
+void RightLoopMove(char* pStr,unsigned short steps)
+{
+	assert(pStr != NULL);
+	assert(steps);
+	int length=strlen(pStr);
+	char* left=pStr,*right=pStr+length-1;
+	char tmp;
+	while(steps)			 //控制向右移多少步
+	{
+		tmp=*right;
+		char *p=right;
+		while(p > left)     //控制字符串移位,每次向右移一位，移p-left次
+		{
+			*(p)=*(p-1);
+			p--;
+		}
+		*left=tmp;
+		steps--;
+	}
+}
+
+void main()
+{
+	char str[]="abcdefghi";
+	RightLoopMove(str,2);
+	cout<<str<<endl;
+}
+
+
+

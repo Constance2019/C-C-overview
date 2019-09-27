@@ -1,0 +1,54 @@
+1.有虚函数的类对象的第一个成员是__fptr,可以进行强转查看虚表入口地址，取出虚表中的函数。
+typedef void (*Fun)();
+void main()
+{
+	D d;
+	D d1;
+
+	//int *p=(int *)&d;
+
+	cout<<hex<<*(int *)&d<<endl;
+	Fun pFun=NULL;
+
+	pFun=(Fun)*((int *)*(int *)(&d));
+	pFun();
+
+}
+
+2.
+class B
+{
+public:
+	virtual void Func(int i=8)
+	{
+		cout<<"virtual B::Func()"<<i<<endl;
+	}
+	int show(int a)
+	{
+		cout<<"B::show(int)"<<endl;
+		return 0;
+	}
+};
+class D:public B
+{
+public:
+	virtual void Func(int a=9)
+	{
+		cout<<"D::Func(int)"<<a<<endl; 
+	}
+
+	virtual void show()
+	{
+		cout<<"D::show()"<<endl;
+	}
+};
+
+void main()
+{
+	D d;
+	d.show();     //调用子类中的show()
+	B* ptr=&d;
+	//B b=d;
+	//B &b=d;
+	ptr->Func();   //D::Func(int)8
+}

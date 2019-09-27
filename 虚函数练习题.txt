@@ -1,0 +1,42 @@
+1.
+class B
+{
+public:
+	virtual void f()
+	{
+		this->print();
+	}
+	virtual void print(int i=6)
+	{
+		cout<<"Base:"<<i*i<<endl;
+	}
+
+};
+
+class D:public B
+{
+public:
+	virtual void f()
+	{
+		this->print();
+	}
+	virtual void print(int i=10)
+	{
+		cout<<"Derived:"<<i*i<<endl;
+	}
+};
+
+void bar(B* p)
+{
+	p->print(5);
+	p->f();
+}
+
+void main()
+{
+	B* p=new B;      //Base:25  Base::36
+	bar(p);
+
+	B* q=new D;    //Derived:25  Derived:100
+	bar(q);
+}
