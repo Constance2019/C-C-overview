@@ -1,0 +1,24 @@
+void GetMem(char** p)  //C语言的方法（p是一个指针变量，它指向char *类型数据）传参时给char*类型数据的地址
+{
+	*p=(char *)malloc(100);
+}
+
+void GetMem(char*& p)  //C++的方法：p是str的引用，给p开辟空间就是给str开辟空间
+{
+	p=(char *)malloc(100);
+}
+char* GetMem(char* p)//p是str的拷贝，如果只是给p开辟空间而不返回，str依然没有空间
+{
+	p=(char*)malloc(100);
+	return p;
+}
+
+void main() 
+{
+	char *str=NULL;
+	//GetMem(&str);
+	//GetMem(str); 
+	str=GetMem(str);
+	strcpy(str,"hello world");
+	printf(str);
+}
